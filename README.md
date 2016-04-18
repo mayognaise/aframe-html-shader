@@ -1,6 +1,6 @@
 # AFrame HTML Shader
 
-A shader to render HTML DOM Element for [A-Frame](https://aframe.io) VR. Inspired by [@scenevr](https://github.com/scenevr)'s [htmltexture-component](https://github.com/scenevr/htmltexture-component) with [@niklasvh](https://github.com/niklasvh)'s [html2canvas](https://github.com/niklasvh/html2canvas)
+A shader to render DOM Element for [A-Frame](https://aframe.io) VR. Inspired by [@scenevr](https://github.com/scenevr)'s [htmltexture-component](https://github.com/scenevr/htmltexture-component) with [@niklasvh](https://github.com/niklasvh)'s [html2canvas](https://github.com/niklasvh/html2canvas)
 
 
 **[DEMO](https://mayognaise.github.io/aframe-html-shader/basic/index.html)**
