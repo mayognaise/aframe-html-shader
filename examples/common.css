@@ -1,0 +1,33 @@
+html {
+  position: inherit !important;
+}
+.buttons {
+  position: absolute;
+  z-index: 2;
+  right: 0;
+  text-align: right;
+  height: 0;
+}
+.buttons a {
+  display: inline-block;
+  border: none;
+  padding: 1em;
+  margin: 1em 1em 0 0;
+  background: gray;
+  color: white;
+  font: 14px monospace;
+  text-decoration: none;
+}
+.buttons a:active {
+  background: #333;
+}
+.spacer {
+  position: relative;
+  pointer-events: none;
+  height: 100%;
+}
+.spacer2 {
+  position: relative;
+  pointer-events: none;
+  height: 1px;
+}

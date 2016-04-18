@@ -1,0 +1,51 @@
+{
+  "name": "aframe-html-shader",
+  "version": "0.0.1",
+  "description": "A shader to display html for A-Frame VR.",
+  "main": "dist/aframe-html-shader.js",
+  "scripts": {
+    "build": "webpack -p examples/main.js examples/build.js",
+    "dev": "budo examples/main.js:build.js --dir examples --port 8000 --live -- -t babelify",
+    "dist": "webpack index.js dist/aframe-html-shader.js && webpack -p index.js dist/aframe-html-shader.min.js",
+    "postpublish": "npm run dist",
+    "preghpages": "npm run build && rm -rf gh-pages && cp -r examples gh-pages",
+    "ghpages": "npm run preghpages && ghpages -p gh-pages"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mayognaise/aframe-html-shader.git"
+  },
+  "keywords": [
+    "aframe",
+    "aframe-shader",
+    "aframe-vr",
+    "vr",
+    "aframe-layout",
+    "mozvr",
+    "webvr",
+    "html",
+    "html2canvas",
+    "canvas",
+    "shader",
+    "material"
+  ],
+  "author": "Mayo Tobita <tobimayo@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mayognaise/aframe-html-shader/issues"
+  },
+  "homepage": "https://github.com/mayognaise/aframe-html-shader#readme",
+  "devDependencies": {
+    "aframe": "^0.2.0",
+    "babel-core": "^6.7.6",
+    "babel-loader": "^6.2.4",
+    "babel-preset-es2015": "^6.6.0",
+    "babelify": "^7.2.0",
+    "browserify": "^13.0.0",
+    "budo": "^8.2.1",
+    "callback-timeout": "^2.0.0",
+    "ghpages": "0.0.3",
+    "json-loader": "^0.5.4",
+    "webpack": "^1.12.15"
+  }
+}
