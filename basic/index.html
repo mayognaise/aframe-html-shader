@@ -80,10 +80,10 @@
 
 
       <!-- emoji -->
-      <a-entity id="emojiEntity" geometry="primitive:box;width:2;height:2;depth:2;side:both" rotation="30 60 30" position="-2 2.5 0" material="shader:html;target:#emoji;transparent:true;ratio:height;fps:0.3;"></a-entity>
+      <a-entity id="emojiEntity" geometry="primitive:box;width:3;height:3;depth:3;" rotation="30 60 30" position="-2 2.5 -0.5" material="shader:html;target:#emoji;transparent:true;ratio:height;fps:0.3;side:double;"></a-entity>
 
       <!-- letters -->
-      <a-entity id="lettersEntity" geometry="primitive:plane;width:2;height:2;" rotation="-30 -30 0" position="-0.2 1.5 2.5" material="shader:html;target:#target;transparent:true;ratio:width;fps:1.5"></a-entity>
+      <a-entity id="lettersEntity" geometry="primitive:plane;width:2;height:2;" rotation="-30 -30 0" position="-0.2 1.5 2.5" material="shader:html;target:#target;transparent:true;ratio:width;fps:1.5;"></a-entity>
 
       <!-- sky -->
       <a-sky color="pink"></a-sky>
@@ -102,7 +102,7 @@
 
     <div class="buttons novr">
       <a href="javascript:toggleVisibility()">toggle DOM visibility</a>
-      <a href="javascript:toggleEmojiDebug()">toggle debug mode for emoji</a>
+      <a href="javascript:toggleLettersDebug()">toggle debug mode for letters</a>
     </div>
 
     <div class="spacer"></div>
@@ -145,10 +145,10 @@
     function toggleVisibility () {
       htmlTarget.classList.toggle('hide');
     }
-    function toggleEmojiDebug () {
-      var material = Object.assign({}, emojiEntity.getAttribute('material'))
+    function toggleLettersDebug () {
+      var material = Object.assign({}, lettersEntity.getAttribute('material'))
       material.debug = !material.debug? '#debug' : ''
-      emojiEntity.setAttribute('material', material)
+      lettersEntity.setAttribute('material', material)
     }
     </script>
 
