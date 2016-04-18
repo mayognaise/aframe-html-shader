@@ -1,6 +1,6 @@
 {
   "name": "aframe-html-shader",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A shader to render DOM Element for A-Frame VR.",
   "main": "dist/aframe-html-shader.js",
   "scripts": {
@@ -43,7 +43,6 @@
     "babelify": "^7.2.0",
     "browserify": "^13.0.0",
     "budo": "^8.2.1",
-    "callback-timeout": "^2.0.0",
     "ghpages": "0.0.3",
     "json-loader": "^0.5.4",
     "webpack": "^1.12.15"
