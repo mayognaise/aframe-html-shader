@@ -21,9 +21,14 @@
       margin: 0;
       vertical-align: top;
       color: white;
+      padding-left: 20px;
     }
     #target h1 span {
-      color: tomato;
+      display: inline-block;
+      margin-left: 10px;
+    }
+    #target h1 span img {
+      width: 80px;
     }
     #emoji {
       position: absolute;
@@ -59,6 +64,13 @@
       }
       #target h1 {
         font-size: 55px;
+        padding-left: 10px;
+      }
+      #target h1 span {
+        margin-left: 5px;
+      }
+      #target h1 span img {
+        width: 40px;
       }
       #pre {
         height: 50px;
@@ -80,10 +92,10 @@
 
 
       <!-- emoji -->
-      <a-entity id="emojiEntity" geometry="primitive:box;width:3;height:3;depth:3;" rotation="30 60 30" position="-2 2.5 -0.5" material="shader:html;target:#emoji;transparent:true;ratio:height;fps:0.3;side:double;"></a-entity>
+      <!-- <a-entity id="emojiEntity" geometry="primitive:box;width:3;height:3;depth:3;" rotation="30 60 30" position="-2 2.5 -0.5" material="shader:html;target:#emoji;transparent:true;ratio:height;side:double;"></a-entity> -->
 
       <!-- letters -->
-      <a-entity id="lettersEntity" geometry="primitive:plane;width:2;height:2;" rotation="-30 -30 0" position="-0.2 1.5 2.5" material="shader:html;target:#target;transparent:true;ratio:width;fps:1.5;"></a-entity>
+      <a-entity id="lettersEntity" geometry="primitive:plane;width:2;height:2;" rotation="-30 -30 0" position="-0.2 1.5 2.5" material="shader:html;target:#target;transparent:true;ratio:width;imageTimeout:5000;logging:true"></a-entity>
 
       <!-- sky -->
       <a-sky color="pink"></a-sky>
@@ -91,9 +103,9 @@
     </a-scene>
 
     <div id="htmlTarget" class="hide">
-      <div id="emoji">〠</div>
+      <div id="emoji">㋵</div>
       <div id="target">
-        <h1>HELLO<span>★</span></h1>
+        <h1>HELLO<span><img src="cake.png"/></span></h1>
         <span id="pre">A</span>
       </div>
     </div>
@@ -109,7 +121,7 @@
     <div class="spacer2"></div>
 
     <script>
-    var emojis = ['〠','✪','♬','㋵','㋺','㋛','㋗','㋧'];
+    var emojis = ['㋵','㋺','㋛','㋗','㋧'];
     var pres = 'A-frame is fun!!!';
 
     var emojiEntity = document.getElementById('emojiEntity')
@@ -124,11 +136,8 @@
     function ready () {
       scene.addEventListener('enter-vr', function () { document.body.setAttribute('data-vr', true) })
       scene.addEventListener('exit-vr', function () { document.body.setAttribute('data-vr', false) })
-      var fps = emojiEntity.getAttribute('material').fps
-      updateEmoji(0, 1000/fps)
-      var fps2 = lettersEntity.getAttribute('material').fps
-      console.log(fps, fps2)
-      updateLetters(0, 1000/fps2)
+      // updateEmoji(0, 2000)
+      updateLetters(0, 60 * 1000)
     }
     function updateEmoji (cnt, fps) {
       emoji.innerHTML = emojis[cnt++ % emojis.length]

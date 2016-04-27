@@ -13,10 +13,10 @@ if (typeof AFRAME === 'undefined') {
 
 /* get util from AFRAME */
 const { debug } = AFRAME.utils
-// debug.enable('shader:html:*')
-debug.enable('shader:html:warn')
+debug.enable('shader:html:*')
+// debug.enable('shader:html:warn')
 const warn = debug('shader:html:warn')
-const log = debug('shader:html:debug')
+const log = debug('shader:html:log')
 
 /* create error message */
 function createError (err, target) {
@@ -45,10 +45,18 @@ AFRAME.registerShader('html', {
     src: { default: null },
     target: { default: null },
     debug: { default: null },
-    fps: { type: 'number', default: 0 },
+    ratio: { default: null },
+    /* html2canvas */
+    taintTest: { default: true },
+    allowTaint: { default: false },
+    letterRendering: { default: false },
+    useCORS: { default: false },
+    logging: { default: false },
+    imageTimeout: { type: 'number', default: 0 },
+    background: { default: undefined },
+    proxy: { default: undefined },
     width: { default: null },
     height: { default: null },
-    ratio: { default: null },
 
   },
 
@@ -58,6 +66,7 @@ AFRAME.registerShader('html', {
    */
   init (data) {
     log('init', data)
+    this.el.__html = this.el.__html || {} /* storing data individually */
     this.__cnv = document.createElement('canvas')
     this.__cnv.width = 2
     this.__cnv.height = 2
@@ -65,6 +74,8 @@ AFRAME.registerShader('html', {
     this.__texture = new THREE.Texture(this.__cnv)
     this.__reset()
     this.material = new THREE.MeshBasicMaterial({ map: this.__texture })
+    this.__addEventListeners()
+    this.__createObserver()
     this.el.sceneEl.addBehavior(this)
     return this.material
   },
@@ -84,16 +95,7 @@ AFRAME.registerShader('html', {
    * Called on each scene tick.
    * @protected
    */
-  tick (t) {
-
-    if (this.__paused || !this.__target || !this.__nextTime) { return }
-
-    const now = Date.now()
-    if (now > this.__nextTime) {
-      this.__render()
-    }
-
-  },
+  tick (t) { },
 
   /*================================
   =            material            =
@@ -183,42 +185,21 @@ AFRAME.registerShader('html', {
       this.__ratio = this.schema.ratio.default
     }
 
-    /* fps */
-    if (fps) {
-      if (this.__fps > 0) {
-        this.__fps = fps
-      }
-      else if (fps === -1) {
-        /* render only once */
-        this.__fps = this.schema.fps.default
-        if (this.__target) {
-          this.__render()
-        }
-        /* set attribute */
-        const material = Object.assign({}, this.el.getAttribute('material'))
-        delete material.fps
-        this.el.setAttribute('material', material)
-      }
-      else {
-        this.__fps = fps
-        if (this.__target) {
-          this.play()
-          this.__render()
-        }
-      }
-    }
-    else {
-      if (this.__fps > 0) {
-        this.pause()
-      }
-      else {
-        this.__fps = this.schema.fps.default
-      }
-    }
+    /* html2canvas */
+    this.__taintTest = data.taintTest || this.schema.taintTest.default
+    this.__allowTaint = data.allowTaint || this.schema.allowTaint.default
+    this.__letterRendering = data.letterRendering || this.schema.letterRendering.default
+    this.__useCORS = data.useCORS || this.schema.useCORS.default
+    this.__logging = data.logging || this.schema.logging.default
+    this.__imageTimeout = data.imageTimeout || this.schema.imageTimeout.default
+    this.__background = data.background || this.schema.background.default
+    this.__proxy = data.proxy || this.schema.proxy.default
 
     /* target */
     if (target) {
       if (target === this.__target) { return }
+      /* disconnect observation */
+      this.__disconnect()
       this.__target = target
       // return
       this.__validateSrc(target, this.__setTexure.bind(this))
@@ -285,49 +266,6 @@ AFRAME.registerShader('html', {
   },
   
 
-  /*================================
-  =            playback            =
-  ================================*/
-
-  /**
-   * Pause video
-   * @public
-   */
-  pause () {
-    log('pause')
-    this.__paused = true
-    this.__nextTime = null
-  },
-
-  /**
-   * Play video
-   * @public
-   */
-  play () {
-    log('play')
-    this.__paused = false
-  },
-
-  /**
-   * Toggle playback. play if paused and pause if played.
-   * @public
-   */
-  
-  togglePlayback () {
-    if (this.paused()) { this.play() }
-    else { this.pause() }
-
-  },
-  
-  /**
-   * Return if the playback is paused.
-   * @public
-   * @return {boolean}
-   */  
-  paused () {
-    return this.__paused
-  },
-
   /*==============================
    =            canvas            =
    ==============================*/
@@ -369,8 +307,7 @@ AFRAME.registerShader('html', {
       this.__debugEl.appendChild(canvas)
     }
 
-    /* setup next tick */
-    this.__setNextTick()
+    this.__isRendering = false
 
   },
 
@@ -380,24 +317,24 @@ AFRAME.registerShader('html', {
    */
   __render () {
     this.__nextTime = null
-    if (!this.__targetEl) { return }
+    if (!this.__targetEl || this.__isRendering) { return }
     const { width, height } = this.__targetEl.getBoundingClientRect()
-    html2canvas(this.__targetEl, {
-      background: undefined,
+    const options = {
+      taintTest: this.__taintTest,
+      allowTaint: this.__allowTaint,
+      letterRendering: this.__letterRendering,
+      useCORS: this.__useCORS,
+      logging: this.__logging,
+      imageTimeout: this.__imageTimeout,
+      background: this.__background,
+      proxy: this.__proxy,
       width: this.__width || width,
       height: this.__height || height,
       onrendered: this.__draw.bind(this)
-    })
-  },
-
-  /**
-   * get next time to draw
-   * @private
-   */  
-  __setNextTick () {
-    if (this.__fps > 0) {
-      this.__nextTime = Date.now() + (1000 / this.__fps)
     }
+    html2canvas(this.__targetEl, options)
+    this.__isRendering = true
+
   },
   
 
@@ -415,9 +352,107 @@ AFRAME.registerShader('html', {
     log('__ready')
     this.__target = target
     this.__targetEl = targetEl
-    this.play()
     this.__render()
+    this.__observe()
   },
+
+
+  /*=======================================
+  =            event listeners            =
+  =======================================*/
+
+  __onComponentChanged (e) {
+
+    if (!this.el.__html.listener) { return }
+
+    const { newData, oldData } = e.detail
+    if (newData.shader !== 'html' && oldData.shader === 'html') {
+      this.__remove()
+    }
+  },
+  
+  __addEventListeners () {
+    if (typeof this.el.__html.listener === 'undefined') {
+      this.el.addEventListener('componentchanged', this.__onComponentChanged.bind(this))
+    }
+    this.el.__html.listener = true
+  },
+
+  __removeEventListeners () {
+    this.el.__html.listener = false
+    // this.el.removeEventListener('componentchanged', this.__onComponentChanged.bind(this))
+  },
+
+
+  /**
+   * Remove when shader has changed from 'html' to others
+   * @private
+   */
+  __remove () {
+    log('__remove')
+    this.__removeEventListeners()
+    this.__reset()
+  },
+
+
+
+  /*================================
+  =            observer            =
+  ================================*/
+
+  /**
+   * stop observing
+   * @private
+   * @see https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver#disconnect()
+   */
+  
+  __disconnect () {
+
+    if (this.__targetEl) {
+      this.el.__html.observer.disconnect()
+    }
+
+  },
+
+  /**
+   * start observing
+   * @private
+   * @see https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver#observe()
+   */
+  __observe () {
+
+    log('__observe', this.__targetEl)
+
+    /**
+     * configuration of the observer
+     * @see https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver#MutationObserverInit
+     */
+    
+    const config = { attributes: true, childList: true, characterData: true, subtree: true, attributeOldValue: true, characterDataOldValue: true }
+     
+    /* pass in the target node, as well as the observer options */
+    this.el.__html.observer.observe(this.__targetEl, config)
+
+
+  },
+  
+  /**
+   * create an observer instance
+   * @private
+   * @see https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver#MutationObserver()
+   */
+  __createObserver () {
+
+    if (this.el.__html.observer) { return }
+
+    log('__createObserver')
+
+    this.el.__html.observer = new MutationObserver(this.__render.bind(this))
+
+  },
+  
+  
+  
   
   
 
@@ -430,11 +465,11 @@ AFRAME.registerShader('html', {
    */
   
   __reset () {
-    this.pause()
     this.__clearCanvas()
     this.__target = null
     this.__targetEl = null
     this.__debugEl = null
+    this.__isRendering = false
   },
 
 
