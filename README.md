@@ -41,7 +41,7 @@ For refference, please check the following links:
 - [Textures](https://aframe.io/docs/components/material.html#Textures)
 - [Flat Shading Model](https://aframe.io/docs/core/shaders.html#Flat-Shading-Model)
 
-[Aailable options](https://html2canvas.hertzen.com/documentation.html#available-options) by `html2canvas` will be ready for properties soon.
+[Available options](https://html2canvas.hertzen.com/documentation.html#available-options) by `html2canvas` will be ready for properties soon.
 
 ## Method
 
