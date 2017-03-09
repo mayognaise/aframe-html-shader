@@ -46,11 +46,11 @@
 
 	'use strict';
 
-	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; }; /**
-	                                                                                                                                                                                                                                                   * A shader to render HTML DOM Element
-	                                                                                                                                                                                                                                                   * Inspired by @scenevr's `htmltexture-component`
-	                                                                                                                                                                                                                                                   * @see https://github.com/scenevr/htmltexture-component
-	                                                                                                                                                                                                                                                   */
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; /**
+	                                                                                                                                                                                                                                                                               * A shader to render HTML DOM Element
+	                                                                                                                                                                                                                                                                               * Inspired by @scenevr's `htmltexture-component`
+	                                                                                                                                                                                                                                                                               * @see https://github.com/scenevr/htmltexture-component
+	                                                                                                                                                                                                                                                                               */
 
 	var _core = __webpack_require__(1);
 
@@ -214,11 +214,11 @@
 	  __updateTexture: function __updateTexture(data) {
 	    var _this = this;
 
-	    var target = data.target;
-	    var fps = data.fps;
-	    var width = data.width;
-	    var height = data.height;
-	    var ratio = data.ratio;
+	    var target = data.target,
+	        fps = data.fps,
+	        width = data.width,
+	        height = data.height,
+	        ratio = data.ratio;
 
 	    this.__width = width || this.schema.width.default;
 	    this.__height = height || this.schema.height.default;
@@ -428,9 +428,9 @@
 	    this.__texture.needsUpdate = true;
 	    if (this.__ratio) {
 	      /* change size */
-	      var _el$getObject3D$geome = this.el.getObject3D('mesh').geometry.parameters;
-	      var width = _el$getObject3D$geome.width;
-	      var height = _el$getObject3D$geome.height;
+	      var gParams = this.el.getObject3D('mesh').geometry.metadata.parameters || this.el.getObject3D('mesh').geometry.parameters;
+	      var width = gParams.width,
+	          height = gParams.height;
 
 	      this.el.setAttribute('geometry', Object.assign({}, this.el.getAttribute('geometry'), {
 	        width: this.__ratio === 'width' ? width : height * ratio,
@@ -459,10 +459,9 @@
 	      return;
 	    }
 
-	    var _targetEl$getBoundin = this.__targetEl.getBoundingClientRect();
-
-	    var width = _targetEl$getBoundin.width;
-	    var height = _targetEl$getBoundin.height;
+	    var _targetEl$getBoundin = this.__targetEl.getBoundingClientRect(),
+	        width = _targetEl$getBoundin.width,
+	        height = _targetEl$getBoundin.height;
 
 	    (0, _core2.default)(this.__targetEl, {
 	      background: undefined,
@@ -495,8 +494,8 @@
 	   * @property {DOM Element} targetEl - target
 	   */
 	  __ready: function __ready(_ref) {
-	    var target = _ref.target;
-	    var targetEl = _ref.targetEl;
+	    var target = _ref.target,
+	        targetEl = _ref.targetEl;
 
 	    log('__ready');
 	    this.__target = target;
@@ -747,7 +746,7 @@
 
 	'use strict';
 
-	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 	var Renderer = __webpack_require__(4);
 	var LinearGradientContainer = __webpack_require__(6);
@@ -2657,7 +2656,7 @@
 	        this.renderer.renderBorders(calculateBorders(borders, bounds, borderPoints, radius));
 	        if (container.node.checked) {
 	            this.renderer.font(new Color('#424242'), 'normal', 'normal', 'bold', size - 3 + "px", 'arial');
-	            this.renderer.text('✔', bounds.left + size / 6, bounds.top + size - 1);
+	            this.renderer.text('\u2714', bounds.left + size / 6, bounds.top + size - 1);
 	        }
 	    }, this);
 	};
@@ -3947,7 +3946,7 @@
 	    if (this.node.tagName === "SELECT") {
 	        value = selectionValue(this.node);
 	    } else if (this.node.type === "password") {
-	        value = Array(value.length + 1).join('•'); // jshint ignore:line
+	        value = Array(value.length + 1).join('\u2022'); // jshint ignore:line
 	    }
 	    return value.length === 0 ? this.node.placeholder || "" : value;
 	};
