@@ -356,7 +356,13 @@ AFRAME.registerShader('html', {
     this.__texture.needsUpdate = true
     if (this.__ratio) {
       /* change size */
-      const { width, height } = this.el.getObject3D('mesh').geometry.parameters
+      // const { width, height } = this.el.getObject3D('mesh').geometry.parameters
+      const material = this.el.getAttribute('material')
+      const target = document.querySelector(material.target)
+      if (!target) return
+      const width = target.clientWidth / 160
+      const height = target.clientHeight / 160
+      
       this.el.setAttribute('geometry', Object.assign({}, this.el.getAttribute('geometry'), {
         width: (this.__ratio === 'width')? width : height * ratio,
         height: (this.__ratio === 'width')? width / ratio : height
