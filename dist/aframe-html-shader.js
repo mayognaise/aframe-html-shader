@@ -432,8 +432,8 @@
 	      var material = this.el.getAttribute('material');
 	      var target = document.querySelector(material.target);
 	      if (!target) return;
-	      var width = target.clientWidth / 160;
-	      var height = target.clientHeight / 160;
+	      var width = target.clientWidth / 4;
+	      var height = target.clientHeight / 4;
 
 	      this.el.setAttribute('geometry', Object.assign({}, this.el.getAttribute('geometry'), {
 	        width: this.__ratio === 'width' ? width : height * ratio,
