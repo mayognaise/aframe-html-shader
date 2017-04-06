@@ -427,13 +427,9 @@
 	    this.__ctx.drawImage(canvas, 0, 0, cnvW, cnvH);
 	    this.__texture.needsUpdate = true;
 	    if (this.__ratio) {
-	      /* change size */
-	      // const { width, height } = this.el.getObject3D('mesh').geometry.parameters
-	      var material = this.el.getAttribute('material');
-	      var target = document.querySelector(material.target);
-	      if (!target) return;
-	      var width = target.clientWidth / 4;
-	      var height = target.clientHeight / 4;
+	      var _el$getObject3D$geome = this.el.getObject3D('mesh').geometry.metadata.parameters;
+	      var width = AFRAME.utils.entity.getComponentProperty(this.el, 'geometry.width');
+	      var height = AFRAME.utils.entity.getComponentProperty(this.el, 'geometry.height');
 
 	      this.el.setAttribute('geometry', Object.assign({}, this.el.getAttribute('geometry'), {
 	        width: this.__ratio === 'width' ? width : height * ratio,
