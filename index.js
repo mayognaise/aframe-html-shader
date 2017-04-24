@@ -355,14 +355,16 @@ AFRAME.registerShader('html', {
     this.__ctx.drawImage(canvas, 0, 0, cnvW, cnvH)
     this.__texture.needsUpdate = true
     if (this.__ratio) {
-      var _el$getObject3D$geome = this.el.getObject3D('mesh').geometry.metadata.parameters;
-      var width = AFRAME.utils.entity.getComponentProperty(this.el, 'geometry.width');
-      var height = AFRAME.utils.entity.getComponentProperty(this.el, 'geometry.height');
-      
-      this.el.setAttribute('geometry', Object.assign({}, this.el.getAttribute('geometry'), {
-        width: (this.__ratio === 'width')? width : height * ratio,
-        height: (this.__ratio === 'width')? width / ratio : height
-      }))
+      if (this.el.getObject3D('mesh').geometry.metadata) {
+        var _el$getObject3D$geome = this.el.getObject3D('mesh').geometry.metadata.parameters;
+        var width = AFRAME.utils.entity.getComponentProperty(this.el, 'geometry.width');
+        var height = AFRAME.utils.entity.getComponentProperty(this.el, 'geometry.height');
+        
+        this.el.setAttribute('geometry', Object.assign({}, this.el.getAttribute('geometry'), {
+          width: (this.__ratio === 'width')? width : height * ratio,
+          height: (this.__ratio === 'width')? width / ratio : height
+        }))
+      }
     }
 
     /* append if debug element exists */
