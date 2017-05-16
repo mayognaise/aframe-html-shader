@@ -2,15 +2,17 @@ html {
   position: inherit !important;
 }
 .buttons {
-  position: absolute;
+  position: fixed;
   z-index: 2;
   right: 0;
   text-align: right;
+  top: 0;
   height: 0;
 }
 .buttons a {
   display: inline-block;
   border: none;
+  cursor: pointer;
   padding: 1em;
   margin: 1em 1em 0 0;
   background: gray;
