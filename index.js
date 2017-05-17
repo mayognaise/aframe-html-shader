@@ -42,7 +42,6 @@ AFRAME.registerShader('html', {
     fog: { default: true },
 
     /* For texuture */
-    src: { default: null },
     target: { default: null },
     debug: { default: null },
     fps: { type: 'number', default: 0 },
