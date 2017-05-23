@@ -1,0 +1,71 @@
+.tile {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  --x: calc((var(--j, 0) - 3)*5em);
+  --y: calc((var(--i, 0) - 3)*5em);
+  --x1: calc(1.41421*var(--x));
+  --y1: calc(1.41421*var(--y));
+  transform: translate(var(--x), var(--y));
+  animation: s 1.5s cubic-bezier(0.35, 0, 0.8, 1) infinite alternate;
+}
+.tile:nth-child(n + 8) {
+  --i: 1;
+}
+.tile:nth-child(7n + 2) {
+  --j: 1;
+}
+.tile:nth-child(n + 15) {
+  --i: 2;
+}
+.tile:nth-child(7n + 3) {
+  --j: 2;
+}
+.tile:nth-child(n + 22) {
+  --i: 3;
+}
+.tile:nth-child(7n + 4) {
+  --j: 3;
+}
+.tile:nth-child(n + 29) {
+  --i: 4;
+}
+.tile:nth-child(7n + 5) {
+  --j: 4;
+}
+.tile:nth-child(n + 36) {
+  --i: 5;
+}
+.tile:nth-child(7n + 6) {
+  --j: 5;
+}
+.tile:nth-child(n + 43) {
+  --i: 6;
+}
+.tile:nth-child(7n + 7) {
+  --j: 6;
+}
+.tile:after {
+  position: absolute;
+  margin: -2.5em;
+  width: 5em;
+  height: 5em;
+  box-shadow: inset 0 0 0 1px;
+  background: dimgray;
+  animation: r 3s ease-in-out infinite;
+  content: "";
+}
+.tile:nth-child(2n):after {
+  animation-direction: reverse;
+}
+
+@keyframes s {
+  to {
+    transform: translate(var(--x1), var(--y1));
+  }
+}
+@keyframes r {
+  to {
+    transform: rotate(90deg);
+  }
+}

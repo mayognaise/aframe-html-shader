@@ -3,155 +3,33 @@
     <meta charset="utf-8">
     <meta name="viewport" content="initial-scale=1.0,user-scalable=no,maximum-scale=1,width=device-width">
     <title>A-Frame HTML Shader - Basic</title>
-    <script src="../build.js"></script>
-    <link rel="stylesheet" type="text/css" href="../common.css"/>
-    <style type="text/css">
-    #target {
-      width: 512px;
-      height: 256px;
-      position: absolute;
-      background: rgba(255,255,0,0.3);
-    }
-    #htmlTarget.hide {
-      z-index: -1;
-    }
-    #target h1 {
-      font-family: Arial;
-      font-size: 110px;
-      margin: 0;
-      vertical-align: top;
-      color: white;
-    }
-    #target h1 span {
-      color: tomato;
-    }
-    #emoji {
-      position: absolute;
-      font-size: 512px;
-      color: mediumTurquoise;
-      font-style: serif;
-    }
-    #pre {
-      font-family: monospace;
-      margin: 0;
-      padding: 0;
-      height: 50px;
-      font-size: 50px;
-      background: royalblue;
-      color: tomato;
-    }
-    #htmlTarget {
-      position: absolute;
-      z-index: 1;
-      height: 100%;
-      width: 100%;
-      overflow: hidden;
-    }
-    #debug {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-    }
-    @media (max-width: 512px) {
-      #target {
-        width: 256px;
-        height: 126px;
-      }
-      #target h1 {
-        font-size: 55px;
-      }
-      #pre {
-        height: 50px;
-        font-size: 25px;
-      }
-      #emoji {
-        position: absolute;
-        font-size: 256px;
-        color: mediumTurquoise;
-      }
-    }
-    body[data-vr="true"] .novr{
-      display: none;
-    }
-    </style>
+    <script src="https://aframe.io/releases/0.5.0/aframe.min.js"></script>
+    <script src="../../dist/aframe-html-shader.min.js"></script>
   </head>
   <body>
-    <a-scene vr-mode-ui>
-
-
-      <!-- emoji -->
-      <a-entity id="emojiEntity" geometry="primitive:box;width:3;height:3;depth:3;" rotation="30 60 30" position="-2 2.5 -0.5" material="shader:html;target:#emoji;transparent:true;ratio:height;fps:0.3;side:double;"></a-entity>
-
-      <!-- letters -->
-      <a-entity id="lettersEntity" geometry="primitive:plane;width:2;height:2;" rotation="-30 -30 0" position="-0.2 1.5 2.5" material="shader:html;target:#target;transparent:true;ratio:width;fps:1.5;"></a-entity>
-
-      <!-- sky -->
-      <a-sky color="pink"></a-sky>
-      
+    <a-scene>
+      <a-entity geometry="primitive: box" material="shader: html; target: #boxHTML" position="0 0 -5"></a-entity>
+      <a-plane material="shader: html; target: #planeHTML; ratio: height; transparent: true; side: double" position="0 2 -6"></a-plane>
+      <a-sky material="shader: html; target: #skyHTML"></a-sky>
     </a-scene>
 
-    <div id="htmlTarget" class="hide">
-      <div id="emoji">〠</div>
-      <div id="target">
-        <h1>HELLO<span>★</span></h1>
-        <span id="pre">A</span>
+    <!-- HTML to render as a material. -->
+    <div style="width: 100%; height: 100%; position: fixed; left: 0; top: 0; z-index: -1; overflow: hidden">
+      <div id="boxHTML" style="background-image: url(cheesecake.png); color: white; width: 500px; height: 500px; font-size: 64px; font-family: monospace; text-align: center">
+        <p style="background: rgb(30, 30, 30); position: absolute; top: 25px; width: 500px">CHEESECAKE FOR YOU</p>
       </div>
     </div>
-
-    <div id="debug" class="novr"></div>
-
-    <div class="buttons novr">
-      <a href="javascript:toggleVisibility()">toggle DOM visibility</a>
-      <a href="javascript:toggleLettersDebug()">toggle debug mode for letters</a>
+    <div style="width: 100%; height: 100%; position: fixed; left: 0; top: 0; z-index: -1; overflow: hidden">
+      <div id="planeHTML" style="background: linear-gradient(red, yellow, green); width: 500px; height: 200px; font-size: 64px; padding-top: 15px; color: #222; font-weight: 600; display: flex; align-items: center; text-align: center; border-radius: 200px">
+        <p style="border: 1px #FFF">ARE YOU HUNGRY?</p>
+      </div>
     </div>
-
-    <div class="spacer"></div>
-    <div class="spacer2"></div>
-
-    <script>
-    var emojis = ['〠','✪','♬','㋵','㋺','㋛','㋗','㋧'];
-    var pres = 'A-frame is fun!!!';
-
-    var emojiEntity = document.getElementById('emojiEntity')
-    var lettersEntity = document.getElementById('lettersEntity')
-    var emoji = document.getElementById('emoji')
-    var pre = document.getElementById('pre')
-    var htmlTarget = document.getElementById('htmlTarget')
-    var scene = document.querySelector('a-scene')
-    if (scene.hasLoaded) { ready() }
-    else { scene.addEventListener('loaded', ready) }
-
-    function ready () {
-      scene.addEventListener('enter-vr', function () { document.body.setAttribute('data-vr', true) })
-      scene.addEventListener('exit-vr', function () { document.body.setAttribute('data-vr', false) })
-      var fps = emojiEntity.getAttribute('material').fps
-      updateEmoji(0, 1000/fps)
-      var fps2 = lettersEntity.getAttribute('material').fps
-      console.log(fps, fps2)
-      updateLetters(0, 1000/fps2)
-    }
-    function updateEmoji (cnt, fps) {
-      emoji.innerHTML = emojis[cnt++ % emojis.length]
-      setTimeout(updateEmoji, fps, cnt, fps)
-    }
-    function updateLetters (cnt, fps) {
-      var indexEnd = ++cnt % (pres.length+1)
-      if (pres.charAt(indexEnd) === ' ') {
-        indexEnd = ++cnt % (pres.length+1)
-      }
-      pre.innerHTML = pres.substring(0, indexEnd)
-      setTimeout(updateLetters, fps, cnt, fps)
-    }
-    function toggleVisibility () {
-      htmlTarget.classList.toggle('hide');
-    }
-    function toggleLettersDebug () {
-      var material = Object.assign({}, lettersEntity.getAttribute('material'))
-      material.debug = !material.debug? '#debug' : ''
-      lettersEntity.setAttribute('material', material)
-    }
-    </script>
-
+    <div style="width: 100%; height: 100%; position: fixed; left: 0; top: 0; z-index: -1; overflow: hidden">
+      <div id="skyHTML" style="background: linear-gradient(to top, #222, #EEE); width: 500px; height: 800px; font-size: 100px; color: #111">
+        <p>WELCOME</p>
+        <p>HA HA HA</p>
+        <p>DON'T LOOK DOWN</p>
+      </div>
+    </div>
   </body>
 </html>
-

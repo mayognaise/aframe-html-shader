@@ -34,7 +34,7 @@ AFRAME.registerShader('html', {
    * For MeshBasicMaterial
    * @see http://threejs.org/docs/#Reference/Materials/MeshBasicMaterial
    */
-  
+
   schema: {
 
     /* For material */
@@ -42,7 +42,6 @@ AFRAME.registerShader('html', {
     fog: { default: true },
 
     /* For texuture */
-    src: { default: null },
     target: { default: null },
     debug: { default: null },
     fps: { type: 'number', default: 0 },
@@ -98,7 +97,7 @@ AFRAME.registerShader('html', {
   /*================================
   =            material            =
   ================================*/
-  
+
   /**
    * Updating existing material.
    * @param {object} data - Material component data.
@@ -138,7 +137,7 @@ AFRAME.registerShader('html', {
    * @property {DOM Element} targetEl - target
    * @property {Date} timestamp - created at the texure
    */
-  
+
   __setTexure (data) {
     log('__setTexure', data)
     if (data.status === 'error') {
@@ -160,7 +159,7 @@ AFRAME.registerShader('html', {
     const { target, fps, width, height, ratio } = data
     this.__width = width || this.schema.width.default
     this.__height = height || this.schema.height.default
-    
+
     /* debug */
     const resetDebug = () => {
       if (this.__debugEl) {
@@ -174,7 +173,7 @@ AFRAME.registerShader('html', {
       else resetDebug()
     }
     else resetDebug()
-    
+
     /* ratio */
     if(ratio && ratio === 'width' || ratio === 'height') {
       this.__ratio = ratio
@@ -283,7 +282,7 @@ AFRAME.registerShader('html', {
       return { error: 'no valid selector' }
     }
   },
-  
+
 
   /*================================
   =            playback            =
@@ -312,18 +311,18 @@ AFRAME.registerShader('html', {
    * Toggle playback. play if paused and pause if played.
    * @public
    */
-  
+
   togglePlayback () {
     if (this.paused()) { this.play() }
     else { this.pause() }
 
   },
-  
+
   /**
    * Return if the playback is paused.
    * @public
    * @return {boolean}
-   */  
+   */
   paused () {
     return this.__paused
   },
@@ -356,7 +355,7 @@ AFRAME.registerShader('html', {
     this.__texture.needsUpdate = true
     if (this.__ratio) {
       /* change size */
-      const { width, height } = this.el.getObject3D('mesh').geometry.parameters
+      const { width, height } = this.el.getObject3D('mesh').geometry.metadata.parameters
       this.el.setAttribute('geometry', Object.assign({}, this.el.getAttribute('geometry'), {
         width: (this.__ratio === 'width')? width : height * ratio,
         height: (this.__ratio === 'width')? width / ratio : height
@@ -393,24 +392,24 @@ AFRAME.registerShader('html', {
   /**
    * get next time to draw
    * @private
-   */  
+   */
   __setNextTick () {
     if (this.__fps > 0) {
       this.__nextTime = Date.now() + (1000 / this.__fps)
     }
   },
-  
+
 
   /*============================
   =            ready           =
   ============================*/
-  
+
   /**
    * setup html animation and play if autoplay is true
    * @private
    * @property {string} target - target url
    * @property {DOM Element} targetEl - target
-   */  
+   */
   __ready ({ target, targetEl }) {
     log('__ready')
     this.__target = target
@@ -418,17 +417,17 @@ AFRAME.registerShader('html', {
     this.play()
     this.__render()
   },
-  
-  
+
+
 
   /*=============================
   =            reset            =
   =============================*/
-  
+
   /**
    * @private
    */
-  
+
   __reset () {
     this.pause()
     this.__clearCanvas()
