@@ -60,6 +60,17 @@ The following events are coming soon:
 - `html-ready` when `html2canvas` set and ready to render
 - `html-draw` each time it renders
 
+## Visibility
+
+For the conversion to canvas to work, we need to make the target HTML element
+technically visible and within the viewport, but we also don't want it to get
+in the way of our scene. We usually want to give the HTML element a fixed
+position and z-index it under everything:
+
+```html
+<div id="targetHTML" style="width: 100%; height: 100%; position: fixed; left: 0; top: 0; z-index: -1; overflow: hidden"></div>
+```
+
 ## Usage
 
 ### Browser Installation
@@ -78,7 +89,7 @@ Install and use by directly including the [browser files](dist):
     <a-entity geometry="primitive: box" material="shader: html; target: #htmlElement"></a-entity>
   </a-scene>
 
-  <div>
+  <div style="width: 100%; height: 100%; position: fixed; left: 0; top: 0; z-index: -1; overflow: hidden">
     <div id="htmlElement" style="background: #F8F8F8; color: #333; font-size: 48px">Hello, HTML!</div>
   </div>
 </body>

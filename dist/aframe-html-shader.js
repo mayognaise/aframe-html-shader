@@ -42,15 +42,15 @@
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; }; /**
-	                                                                                                                                                                                                                                                   * A shader to render HTML DOM Element
-	                                                                                                                                                                                                                                                   * Inspired by @scenevr's `htmltexture-component`
-	                                                                                                                                                                                                                                                   * @see https://github.com/scenevr/htmltexture-component
-	                                                                                                                                                                                                                                                   */
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; /**
+	                                                                                                                                                                                                                                                                               * A shader to render HTML DOM Element
+	                                                                                                                                                                                                                                                                               * Inspired by @scenevr's `htmltexture-component`
+	                                                                                                                                                                                                                                                                               * @see https://github.com/scenevr/htmltexture-component
+	                                                                                                                                                                                                                                                                               */
 
 	var _core = __webpack_require__(1);
 
@@ -93,7 +93,6 @@
 	    fog: { default: true },
 
 	    /* For texuture */
-	    src: { default: null },
 	    target: { default: null },
 	    debug: { default: null },
 	    fps: { type: 'number', default: 0 },
@@ -214,11 +213,11 @@
 	  __updateTexture: function __updateTexture(data) {
 	    var _this = this;
 
-	    var target = data.target;
-	    var fps = data.fps;
-	    var width = data.width;
-	    var height = data.height;
-	    var ratio = data.ratio;
+	    var target = data.target,
+	        fps = data.fps,
+	        width = data.width,
+	        height = data.height,
+	        ratio = data.ratio;
 
 	    this.__width = width || this.schema.width.default;
 	    this.__height = height || this.schema.height.default;
@@ -428,9 +427,9 @@
 	    this.__texture.needsUpdate = true;
 	    if (this.__ratio) {
 	      /* change size */
-	      var _el$getObject3D$geome = this.el.getObject3D('mesh').geometry.parameters;
-	      var width = _el$getObject3D$geome.width;
-	      var height = _el$getObject3D$geome.height;
+	      var _el$getObject3D$geome = this.el.getObject3D('mesh').geometry.metadata.parameters,
+	          width = _el$getObject3D$geome.width,
+	          height = _el$getObject3D$geome.height;
 
 	      this.el.setAttribute('geometry', Object.assign({}, this.el.getAttribute('geometry'), {
 	        width: this.__ratio === 'width' ? width : height * ratio,
@@ -459,10 +458,9 @@
 	      return;
 	    }
 
-	    var _targetEl$getBoundin = this.__targetEl.getBoundingClientRect();
-
-	    var width = _targetEl$getBoundin.width;
-	    var height = _targetEl$getBoundin.height;
+	    var _targetEl$getBoundin = this.__targetEl.getBoundingClientRect(),
+	        width = _targetEl$getBoundin.width,
+	        height = _targetEl$getBoundin.height;
 
 	    (0, _core2.default)(this.__targetEl, {
 	      background: undefined,
@@ -495,8 +493,8 @@
 	   * @property {DOM Element} targetEl - target
 	   */
 	  __ready: function __ready(_ref) {
-	    var target = _ref.target;
-	    var targetEl = _ref.targetEl;
+	    var target = _ref.target,
+	        targetEl = _ref.targetEl;
 
 	    log('__ready');
 	    this.__target = target;
@@ -523,9 +521,9 @@
 	  }
 	});
 
-/***/ },
+/***/ }),
 /* 1 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
 
@@ -679,9 +677,9 @@
 	    return link;
 	}
 
-/***/ },
+/***/ }),
 /* 2 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	"use strict";
 
@@ -741,13 +739,13 @@
 
 	module.exports = Support;
 
-/***/ },
+/***/ }),
 /* 3 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 	var Renderer = __webpack_require__(4);
 	var LinearGradientContainer = __webpack_require__(6);
@@ -921,9 +919,9 @@
 
 	module.exports = CanvasRenderer;
 
-/***/ },
+/***/ }),
 /* 4 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -1026,9 +1024,9 @@
 
 	module.exports = Renderer;
 
-/***/ },
+/***/ }),
 /* 5 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	"use strict";
 
@@ -1041,9 +1039,9 @@
 	logger.options = { logging: false };
 	module.exports = logger;
 
-/***/ },
+/***/ }),
 /* 6 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -1151,9 +1149,9 @@
 
 	module.exports = LinearGradientContainer;
 
-/***/ },
+/***/ }),
 /* 7 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	"use strict";
 
@@ -1179,9 +1177,9 @@
 
 	module.exports = GradientContainer;
 
-/***/ },
+/***/ }),
 /* 8 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	"use strict";
 
@@ -1445,9 +1443,9 @@
 
 	module.exports = Color;
 
-/***/ },
+/***/ }),
 /* 9 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -1609,9 +1607,9 @@
 
 	module.exports = ImageLoader;
 
-/***/ },
+/***/ }),
 /* 10 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	"use strict";
 
@@ -1635,9 +1633,9 @@
 
 	module.exports = ImageContainer;
 
-/***/ },
+/***/ }),
 /* 11 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -1664,9 +1662,9 @@
 
 	module.exports = DummyImageContainer;
 
-/***/ },
+/***/ }),
 /* 12 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	"use strict";
 
@@ -1856,9 +1854,9 @@
 	    return results;
 	};
 
-/***/ },
+/***/ }),
 /* 13 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 
@@ -1884,9 +1882,9 @@
 
 	module.exports = ProxyImageContainer;
 
-/***/ },
+/***/ }),
 /* 14 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -1987,9 +1985,9 @@
 	exports.ProxyURL = ProxyURL;
 	exports.loadUrlDocument = loadUrlDocument;
 
-/***/ },
+/***/ }),
 /* 15 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	"use strict";
 
@@ -2016,9 +2014,9 @@
 
 	module.exports = XHR;
 
-/***/ },
+/***/ }),
 /* 16 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 
@@ -2127,9 +2125,9 @@
 	    });
 	};
 
-/***/ },
+/***/ }),
 /* 17 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -2165,9 +2163,9 @@
 
 	module.exports = FrameContainer;
 
-/***/ },
+/***/ }),
 /* 18 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -2222,9 +2220,9 @@
 
 	module.exports = SVGContainer;
 
-/***/ },
+/***/ }),
 /* 19 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 
@@ -2254,9 +2252,9 @@
 
 	module.exports = SVGNodeContainer;
 
-/***/ },
+/***/ }),
 /* 20 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 
@@ -2271,9 +2269,9 @@
 
 	module.exports = WebkitGradientContainer;
 
-/***/ },
+/***/ }),
 /* 21 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -2657,7 +2655,7 @@
 	        this.renderer.renderBorders(calculateBorders(borders, bounds, borderPoints, radius));
 	        if (container.node.checked) {
 	            this.renderer.font(new Color('#424242'), 'normal', 'normal', 'bold', size - 3 + "px", 'arial');
-	            this.renderer.text('✔', bounds.left + size / 6, bounds.top + size - 1);
+	            this.renderer.text('\u2714', bounds.left + size / 6, bounds.top + size - 1);
 	        }
 	    }, this);
 	};
@@ -3136,9 +3134,9 @@
 
 	module.exports = NodeParser;
 
-/***/ },
+/***/ }),
 /* 22 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(module, global) {/*! https://mths.be/punycode v1.4.1 by @mathias */
 	;(function(root) {
@@ -3674,9 +3672,9 @@
 
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(23)(module), (function() { return this; }())))
 
-/***/ },
+/***/ }),
 /* 23 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	module.exports = function(module) {
 		if(!module.webpackPolyfill) {
@@ -3690,9 +3688,9 @@
 	}
 
 
-/***/ },
+/***/ }),
 /* 24 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -3947,7 +3945,7 @@
 	    if (this.node.tagName === "SELECT") {
 	        value = selectionValue(this.node);
 	    } else if (this.node.type === "password") {
-	        value = Array(value.length + 1).join('•'); // jshint ignore:line
+	        value = Array(value.length + 1).join('\u2022'); // jshint ignore:line
 	    }
 	    return value.length === 0 ? this.node.placeholder || "" : value;
 	};
@@ -3989,9 +3987,9 @@
 
 	module.exports = NodeContainer;
 
-/***/ },
+/***/ }),
 /* 25 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 
@@ -4029,9 +4027,9 @@
 
 	module.exports = TextContainer;
 
-/***/ },
+/***/ }),
 /* 26 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 
@@ -4074,9 +4072,9 @@
 
 	module.exports = PseudoElementContainer;
 
-/***/ },
+/***/ }),
 /* 27 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 
@@ -4095,9 +4093,9 @@
 
 	module.exports = FontMetrics;
 
-/***/ },
+/***/ }),
 /* 28 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -4154,9 +4152,9 @@
 
 	module.exports = Font;
 
-/***/ },
+/***/ }),
 /* 29 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -4179,5 +4177,5 @@
 
 	module.exports = StackingContext;
 
-/***/ }
+/***/ })
 /******/ ]);
