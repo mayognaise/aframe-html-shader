@@ -427,9 +427,9 @@
 	    this.__texture.needsUpdate = true;
 	    if (this.__ratio) {
 	      /* change size */
-	      var _el$getObject3D$geome = this.el.getObject3D('mesh').geometry.metadata.parameters,
-	          width = _el$getObject3D$geome.width,
-	          height = _el$getObject3D$geome.height;
+	      var gParams = this.el.getObject3D('mesh').geometry.metadata.parameters || this.el.getObject3D('mesh').geometry.parameters;
+	      var width = gParams.width,
+	          height = gParams.height;
 
 	      this.el.setAttribute('geometry', Object.assign({}, this.el.getAttribute('geometry'), {
 	        width: this.__ratio === 'width' ? width : height * ratio,
