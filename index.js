@@ -48,6 +48,7 @@ AFRAME.registerShader('html', {
     width: { default: null },
     height: { default: null },
     ratio: { default: null },
+    updateDelay: { default: 5000 },
 
   },
 
@@ -56,6 +57,7 @@ AFRAME.registerShader('html', {
    * @protected
    */
   init (data) {
+
     log('init', data)
     this.__cnv = document.createElement('canvas')
     this.__cnv.width = 2
@@ -73,6 +75,17 @@ AFRAME.registerShader('html', {
    * @param {object|null} oldData
    */
   update (oldData) {
+    var self = this;
+    if (oldData.updateDelay > 0){
+      setTimeout(function(){
+        self.__updateProxy(oldData);
+      }, oldData.updateDelay);
+    } else {
+      this.__updateProxy(oldData); 
+    }
+  },
+
+  __updateProxy(oldData){
     log('update', oldData)
     this.__updateMaterial(oldData)
     this.__updateTexture(oldData)
