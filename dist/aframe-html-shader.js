@@ -421,8 +421,8 @@
 	      return;
 	    }
 	    var ratio = canvas.width / canvas.height;
-	    var cnvW = this.__cnv.width = THREE.Math.nearestPowerOfTwo(canvas.width);
-	    var cnvH = this.__cnv.height = THREE.Math.nearestPowerOfTwo(canvas.height);
+	    var cnvW = this.__cnv.width = THREE.Math.floorPowerOfTwo(canvas.width);
+	    var cnvH = this.__cnv.height = THREE.Math.floorPowerOfTwo(canvas.height);
 	    this.__ctx.drawImage(canvas, 0, 0, cnvW, cnvH);
 	    this.__texture.needsUpdate = true;
 	    if (this.__ratio) {
