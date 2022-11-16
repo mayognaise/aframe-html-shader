@@ -44,7 +44,7 @@
 /* 0 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 
 	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; /**
 	                                                                                                                                                                                                                                                                               * A shader to render HTML DOM Element
@@ -58,25 +58,29 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	if (typeof AFRAME === 'undefined') {
-	  throw 'Component attempted to register before AFRAME was available.';
+	if (typeof AFRAME === "undefined") {
+	  throw "Component attempted to register before AFRAME was available.";
 	}
 
 	/* get util from AFRAME */
 	var debug = AFRAME.utils.debug;
 	// debug.enable('shader:html:*')
 
-	debug.enable('shader:html:warn');
-	var warn = debug('shader:html:warn');
-	var log = debug('shader:html:debug');
+	debug.enable("shader:html:warn");
+	var warn = debug("shader:html:warn");
+	var log = debug("shader:html:debug");
 
 	/* create error message */
 	function createError(err, target) {
-	  return { status: 'error', target: target, message: err, timestamp: Date.now() };
+	  return {
+	    status: "error",
+	    target: target,
+	    message: err,
+	    timestamp: Date.now()
+	  };
 	}
 
-	AFRAME.registerShader('html', {
-
+	AFRAME.registerShader("html", {
 	  /**
 	   * For material component:
 	   * @see https://github.com/aframevr/aframe/blob/60d198ef8e2bfbc57a13511ae5fca7b62e01691b/src/components/material.js
@@ -87,19 +91,17 @@
 	   */
 
 	  schema: {
-
 	    /* For material */
-	    color: { type: 'color' },
+	    color: { type: "color" },
 	    fog: { default: true },
 
 	    /* For texuture */
 	    target: { default: null },
 	    debug: { default: null },
-	    fps: { type: 'number', default: 0 },
+	    fps: { type: "number", default: 0 },
 	    width: { default: null },
 	    height: { default: null },
 	    ratio: { default: null }
-
 	  },
 
 	  /**
@@ -107,11 +109,11 @@
 	   * @protected
 	   */
 	  init: function init(data) {
-	    log('init', data);
-	    this.__cnv = document.createElement('canvas');
+	    log("init", data);
+	    this.__cnv = document.createElement("canvas");
 	    this.__cnv.width = 2;
 	    this.__cnv.height = 2;
-	    this.__ctx = this.__cnv.getContext('2d');
+	    this.__ctx = this.__cnv.getContext("2d");
 	    this.__texture = new THREE.Texture(this.__cnv);
 	    this.__reset();
 	    this.material = new THREE.MeshBasicMaterial({ map: this.__texture });
@@ -125,7 +127,7 @@
 	   * @param {object|null} oldData
 	   */
 	  update: function update(oldData) {
-	    log('update', oldData);
+	    log("update", oldData);
 	    this.__updateMaterial(oldData);
 	    this.__updateTexture(oldData);
 	    return this.material;
@@ -137,7 +139,6 @@
 	   * @protected
 	   */
 	  tick: function tick(t) {
-
 	    if (this.__paused || !this.__target || !this.__nextTime) {
 	      return;
 	    }
@@ -195,11 +196,11 @@
 	   */
 
 	  __setTexure: function __setTexure(data) {
-	    log('__setTexure', data);
-	    if (data.status === 'error') {
-	      warn('Error: ' + data.message + '\ntarget: ' + data.target);
+	    log("__setTexure", data);
+	    if (data.status === "error") {
+	      warn("Error: " + data.message + "\ntarget: " + data.target);
 	      this.__reset();
-	    } else if (data.status === 'success' && data.target !== this.__textureSrc) {
+	    } else if (data.status === "success" && data.target !== this.__textureSrc) {
 	      /* Texture added or changed */
 	      this.__ready(data);
 	    }
@@ -225,7 +226,7 @@
 	    /* debug */
 	    var resetDebug = function resetDebug() {
 	      if (_this.__debugEl) {
-	        _this.__debugEl.innerHTML = '';
+	        _this.__debugEl.innerHTML = "";
 	        _this.__debugEl = _this.schema.debug.default;
 	      }
 	    };
@@ -237,7 +238,7 @@
 	    } else resetDebug();
 
 	    /* ratio */
-	    if (ratio && ratio === 'width' || ratio === 'height') {
+	    if (ratio && ratio === "width" || ratio === "height") {
 	      this.__ratio = ratio;
 	    } else {
 	      this.__ratio = this.schema.ratio.default;
@@ -254,9 +255,9 @@
 	          this.__render();
 	        }
 	        /* set attribute */
-	        var material = Object.assign({}, this.el.getAttribute('material'));
+	        var material = Object.assign({}, this.el.getAttribute("material"));
 	        delete material.fps;
-	        this.el.setAttribute('material', material);
+	        this.el.setAttribute("material", material);
 	      } else {
 	        this.__fps = fps;
 	        if (this.__target) {
@@ -298,22 +299,26 @@
 	   * @param {Function} cb - callback
 	   */
 	  __validateSrc: function __validateSrc(target, cb) {
-
 	    var message = void 0;
 
 	    /* check if target is a query selector */
 	    var el = this.__validateAndGetQuerySelector(target);
-	    if (!el || (typeof el === 'undefined' ? 'undefined' : _typeof(el)) !== 'object') {
+	    if (!el || (typeof el === "undefined" ? "undefined" : _typeof(el)) !== "object") {
 	      return;
 	    }
 	    if (el.error) {
 	      message = el.error;
 	    } else {
 	      var tagName = el.tagName.toLowerCase();
-	      if (tagName === 'img' || tagName === 'video') {
-	        message = 'For <' + tagName + '> element, please use `shader:flat`';
+	      if (tagName === "img" || tagName === "video") {
+	        message = "For <" + tagName + "> element, please use `shader:flat`";
 	      } else {
-	        cb({ status: 'success', target: target, targetEl: el, timestamp: Date.now() });
+	        cb({
+	          status: "success",
+	          target: target,
+	          targetEl: el,
+	          timestamp: Date.now()
+	        });
 	      }
 	    }
 
@@ -335,12 +340,12 @@
 	    try {
 	      var el = document.querySelector(selector);
 	      if (!el) {
-	        return { error: 'No element was found matching the selector' };
+	        return { error: "No element was found matching the selector" };
 	      }
 	      return el;
 	    } catch (e) {
 	      // Capture exception if it's not a valid selector.
-	      return { error: 'no valid selector' };
+	      return { error: "no valid selector" };
 	    }
 	  },
 
@@ -354,7 +359,7 @@
 	   * @public
 	   */
 	  pause: function pause() {
-	    log('pause');
+	    log("pause");
 	    this.__paused = true;
 	    this.__nextTime = null;
 	  },
@@ -365,7 +370,7 @@
 	   * @public
 	   */
 	  play: function play() {
-	    log('play');
+	    log("play");
 	    this.__paused = false;
 	  },
 
@@ -416,30 +421,30 @@
 	   * @private
 	   */
 	  __draw: function __draw(canvas) {
-	    log('__draw');
+	    log("__draw");
 	    if (!this.__ctx || !this.__texture) {
 	      return;
 	    }
 	    var ratio = canvas.width / canvas.height;
-	    var cnvW = this.__cnv.width = THREE.Math.nearestPowerOfTwo(canvas.width);
-	    var cnvH = this.__cnv.height = THREE.Math.nearestPowerOfTwo(canvas.height);
+	    var cnvW = this.__cnv.width = THREE.MathUtils.floorPowerOfTwo(canvas.width);
+	    var cnvH = this.__cnv.height = THREE.MathUtils.floorPowerOfTwo(canvas.height);
 	    this.__ctx.drawImage(canvas, 0, 0, cnvW, cnvH);
 	    this.__texture.needsUpdate = true;
 	    if (this.__ratio) {
 	      /* change size */
-	      var _el$getObject3D$geome = this.el.getObject3D('mesh').geometry.metadata.parameters,
+	      var _el$getObject3D$geome = this.el.getObject3D("mesh").geometry.parameters,
 	          width = _el$getObject3D$geome.width,
 	          height = _el$getObject3D$geome.height;
 
-	      this.el.setAttribute('geometry', Object.assign({}, this.el.getAttribute('geometry'), {
-	        width: this.__ratio === 'width' ? width : height * ratio,
-	        height: this.__ratio === 'width' ? width / ratio : height
+	      this.el.setAttribute("geometry", Object.assign({}, this.el.getAttribute("geometry"), {
+	        width: this.__ratio === "width" ? width : height * ratio,
+	        height: this.__ratio === "width" ? width / ratio : height
 	      }));
 	    }
 
 	    /* append if debug element exists */
 	    if (this.__debugEl) {
-	      this.__debugEl.innerHTML = '';
+	      this.__debugEl.innerHTML = "";
 	      this.__debugEl.appendChild(canvas);
 	    }
 
@@ -496,7 +501,7 @@
 	    var target = _ref.target,
 	        targetEl = _ref.targetEl;
 
-	    log('__ready');
+	    log("__ready");
 	    this.__target = target;
 	    this.__targetEl = targetEl;
 	    this.play();
