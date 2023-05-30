@@ -93,12 +93,12 @@
 	    fog: { default: true },
 
 	    /* For texuture */
-	    target: { default: null },
-	    debug: { default: null },
+	    target: { type: 'string' },
+	    debug: { type: 'string' },
 	    fps: { type: 'number', default: 0 },
-	    width: { default: null },
-	    height: { default: null },
-	    ratio: { default: null }
+	    width: { type: 'number' },
+	    height: { type: 'number' },
+	    ratio: { type: 'string', default: 'height' }
 
 	  },
 
