@@ -1,6 +1,6 @@
 {
   "name": "aframe-html-shader",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "A shader to render DOM Element for A-Frame VR.",
   "main": "dist/aframe-html-shader.js",
   "scripts": {
