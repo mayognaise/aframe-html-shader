@@ -42,12 +42,12 @@ AFRAME.registerShader('html', {
     fog: { default: true },
 
     /* For texuture */
-    target: { default: null },
-    debug: { default: null },
+    target: { type: 'string' },
+    debug: { type: 'string' },
     fps: { type: 'number', default: 0 },
-    width: { default: null },
-    height: { default: null },
-    ratio: { default: null },
+    width: { type: 'number' },
+    height: { type: 'number' },
+    ratio: { type: 'string', default: 'height' }
 
   },
 
@@ -349,13 +349,14 @@ AFRAME.registerShader('html', {
     log('__draw')
     if (!this.__ctx || !this.__texture) { return }
     const ratio = canvas.width / canvas.height
-    const cnvW = this.__cnv.width = THREE.Math.nearestPowerOfTwo(canvas.width)
-    const cnvH = this.__cnv.height = THREE.Math.nearestPowerOfTwo(canvas.height)
+    const cnvW = this.__cnv.width = THREE.MathUtils.floorPowerOfTwo(canvas.width)
+    const cnvH = this.__cnv.height = THREE.MathUtils.floorPowerOfTwo(canvas.height)
     this.__ctx.drawImage(canvas, 0, 0, cnvW, cnvH)
     this.__texture.needsUpdate = true
     if (this.__ratio) {
       /* change size */
-      const { width, height } = this.el.getObject3D('mesh').geometry.metadata.parameters
+      const { metadata, parameters} = this.el.getObject3D('mesh').geometry;
+      const { width, height } = parameters || metadata.parameters
       this.el.setAttribute('geometry', Object.assign({}, this.el.getAttribute('geometry'), {
         width: (this.__ratio === 'width')? width : height * ratio,
         height: (this.__ratio === 'width')? width / ratio : height

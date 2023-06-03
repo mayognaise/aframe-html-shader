@@ -93,12 +93,12 @@
 	    fog: { default: true },
 
 	    /* For texuture */
-	    target: { default: null },
-	    debug: { default: null },
+	    target: { type: 'string' },
+	    debug: { type: 'string' },
 	    fps: { type: 'number', default: 0 },
-	    width: { default: null },
-	    height: { default: null },
-	    ratio: { default: null }
+	    width: { type: 'number' },
+	    height: { type: 'number' },
+	    ratio: { type: 'string', default: 'height' }
 
 	  },
 
@@ -421,15 +421,19 @@
 	      return;
 	    }
 	    var ratio = canvas.width / canvas.height;
-	    var cnvW = this.__cnv.width = THREE.Math.nearestPowerOfTwo(canvas.width);
-	    var cnvH = this.__cnv.height = THREE.Math.nearestPowerOfTwo(canvas.height);
+	    var cnvW = this.__cnv.width = THREE.MathUtils.floorPowerOfTwo(canvas.width);
+	    var cnvH = this.__cnv.height = THREE.MathUtils.floorPowerOfTwo(canvas.height);
 	    this.__ctx.drawImage(canvas, 0, 0, cnvW, cnvH);
 	    this.__texture.needsUpdate = true;
 	    if (this.__ratio) {
 	      /* change size */
-	      var _el$getObject3D$geome = this.el.getObject3D('mesh').geometry.metadata.parameters,
-	          width = _el$getObject3D$geome.width,
-	          height = _el$getObject3D$geome.height;
+	      var _el$getObject3D$geome = this.el.getObject3D('mesh').geometry,
+	          metadata = _el$getObject3D$geome.metadata,
+	          parameters = _el$getObject3D$geome.parameters;
+
+	      var _ref = parameters || metadata.parameters,
+	          width = _ref.width,
+	          height = _ref.height;
 
 	      this.el.setAttribute('geometry', Object.assign({}, this.el.getAttribute('geometry'), {
 	        width: this.__ratio === 'width' ? width : height * ratio,
@@ -492,9 +496,9 @@
 	   * @property {string} target - target url
 	   * @property {DOM Element} targetEl - target
 	   */
-	  __ready: function __ready(_ref) {
-	    var target = _ref.target,
-	        targetEl = _ref.targetEl;
+	  __ready: function __ready(_ref2) {
+	    var target = _ref2.target,
+	        targetEl = _ref2.targetEl;
 
 	    log('__ready');
 	    this.__target = target;
